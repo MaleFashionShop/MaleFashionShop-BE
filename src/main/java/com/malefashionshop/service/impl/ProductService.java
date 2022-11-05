@@ -56,6 +56,21 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public List<ProductResponseDto> getProductByCategory(Long id) {
+        List<ProductEntity> listProductEntity =  this.productRepository.findAllByCategory(id);
+        List<ProductResponseDto> results = new ArrayList<>();
+
+        listProductEntity.forEach(productEntity ->{
+            ProductResponseDto customProductResponseDto = new ProductResponseDto();
+            modelMapper.map(productEntity, customProductResponseDto);
+            this.productEntityAndProductResponseDtoMapper.map(productEntity, customProductResponseDto);
+            results.add(customProductResponseDto);
+        });
+
+        return results;
+    }
+
+    @Override
     public ProductResponseDto getProductById(Long id) {
 
         Optional<ProductEntity> optionalProductEntity = this.productRepository.findById(id);
@@ -120,6 +135,21 @@ public class ProductService implements IProductService {
         this.modelMapper.map(optionalProductEntity.get(), productResponseDto);
 
         return productResponseDto;
+    }
+
+    @Override
+    public List<ProductResponseDto> getProductByBrand(Long brandID) {
+        List<ProductEntity> listProductEntity =  this.productRepository.findAllByBrand(brandID);
+        List<ProductResponseDto> results = new ArrayList<>();
+
+        listProductEntity.forEach(productEntity ->{
+            ProductResponseDto customProductResponseDto = new ProductResponseDto();
+            modelMapper.map(productEntity, customProductResponseDto);
+            this.productEntityAndProductResponseDtoMapper.map(productEntity, customProductResponseDto);
+            results.add(customProductResponseDto);
+        });
+
+        return results;
     }
 
     @Override

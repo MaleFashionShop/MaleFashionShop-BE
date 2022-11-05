@@ -18,6 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.malefashionshop.security.jwt.AuthEntryPointJwt;
 import com.malefashionshop.security.jwt.AuthTokenFilter;
 import com.malefashionshop.service.impl.security.UserDetailsServiceImpl;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 
 @Configuration
@@ -56,13 +59,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowCredentials(true);
+        config.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type", "Access-Control-Allow-Origin" ));
+        config.addAllowedMethod("*");
+        config.setAllowedOrigins(List.of("http://localhost:3000"));
+
+
+        http.cors().configurationSource(request -> config).and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
 
-                .antMatchers(HttpMethod.GET,"/brands").permitAll()
+                .antMatchers(HttpMethod.GET,"/brands/**").permitAll()
                 .antMatchers("/brands/**").hasRole("ADMIN")
 
                 .antMatchers("/cart/customer/**").hasAnyRole("USER","ADMIN", "MODERATOR")
@@ -81,6 +92,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/orderItems/**").hasAnyRole( "ADMIN", "MODERATOR")
 
                 .antMatchers(HttpMethod.GET,"/products/**").permitAll()
+                .antMatchers("/products/**").hasAnyRole( "ADMIN", "MODERATOR")
+
+                .antMatchers(HttpMethod.GET,"/productDetails/**").permitAll()
                 .antMatchers("/products/**").hasAnyRole( "ADMIN", "MODERATOR")
 
                 .antMatchers(HttpMethod.GET,"/images/**").permitAll()

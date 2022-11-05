@@ -21,6 +21,12 @@ public class ProductResponseDto {
 
     private String brandName;
 
+    private int rating;
+
+    private int quantity;
+
+    private String price;
+
     List<String> imageUrls = new ArrayList<>();
 
     List<String> listTags = new ArrayList<>();

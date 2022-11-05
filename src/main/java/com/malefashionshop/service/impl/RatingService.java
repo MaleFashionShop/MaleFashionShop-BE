@@ -95,4 +95,19 @@ public class RatingService implements IRatingService {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(null, "Delete Success Fully!","200"));
 
     }
+
+    public int getAverageRatingByProductID(Long productID){
+        List<RatingEntity> listRatingEntity = this.ratingRepository.findAllByProductId(productID);
+        int avegarageRating = 0;
+        float total = 0;
+        if(listRatingEntity.size()!=0){
+            for(RatingEntity ratingEntity: listRatingEntity){
+                total += ratingEntity.getScore();
+            }
+            return (int) total/listRatingEntity.size();
+        } else{
+            return 5;
+        }
+    }
+
 }

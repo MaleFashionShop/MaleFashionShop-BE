@@ -22,6 +22,9 @@ public class ProductEntity extends BaseEntity{
     @Column(name ="feature_image")
     private String featureImage;
 
+    @Column(name ="price")
+    private float price;
+
     @Column(name="description")
     private String description;
 

@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@CrossOrigin
 public class ProductController {
 
     @Autowired
@@ -30,6 +31,16 @@ public class ProductController {
     @GetMapping("/{id}")
     public ProductResponseDto getProductById(@PathVariable Long id){
         return this.productService.getProductById(id);
+    }
+
+    @GetMapping("/category/{id}")
+    public List<ProductResponseDto> getProductByCategory(@PathVariable("id") Long categoryID){
+        return this.productService.getProductByCategory(categoryID);
+    }
+
+    @GetMapping("/brand/{id}")
+    public List<ProductResponseDto> getProductByBrand(@PathVariable("id") Long brandID){
+        return this.productService.getProductByBrand(brandID);
     }
 
     @PostMapping
@@ -47,4 +58,6 @@ public class ProductController {
     public ProductResponseDto updateProduct(@PathVariable("id") Long id, @RequestBody ProductUpdateDto dto){
         return this.productService.updateProduct(id, dto);
     }
+
+
 }

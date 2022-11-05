@@ -12,6 +12,8 @@ import java.util.List;
 public interface IProductService {
     List<ProductResponseDto> getAllProducts();
 
+    List<ProductResponseDto> getProductByCategory(Long id);
+
     ProductResponseDto getProductById(Long id);
 
     ProductResponseDto createProduct(ProductUpdateDto dto);
@@ -19,6 +21,8 @@ public interface IProductService {
     ResponseEntity<ResponseDto> deleteProduct(Long id);
 
     ProductResponseDto updateProduct(Long id, ProductUpdateDto dto);
+
+    List<ProductResponseDto> getProductByBrand(Long brandID);
 
 
 //    void deleteProduct(Long id);

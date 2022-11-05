@@ -4,10 +4,8 @@ import com.malefashionshop.dto.request.ProductUpdateDto;
 import com.malefashionshop.dto.response.ProductResponseDto;
 import com.malefashionshop.entities.*;
 import com.malefashionshop.exceptions.ResourceNotFoundException;
-import com.malefashionshop.repository.BrandRepository;
-import com.malefashionshop.repository.CategoryRepository;
-import com.malefashionshop.repository.ProductImageRepository;
-import com.malefashionshop.repository.TagRepository;
+import com.malefashionshop.repository.*;
+import com.malefashionshop.service.impl.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +24,10 @@ public class ProductEntityAndProductResponseDtoMapper {
     private BrandRepository brandRepository;
     @Autowired
     private TagRepository tagRepository;
+    @Autowired
+    private RatingService ratingService;
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
 
     public void map(ProductEntity productEntity, ProductResponseDto productResponseDto){
 
@@ -56,6 +58,18 @@ public class ProductEntityAndProductResponseDtoMapper {
             listTags.add(tag.getCode());
         });
         productResponseDto.setListTags(listTags);
+
+        int average =  ratingService.getAverageRatingByProductID(productEntity.getId());
+        productResponseDto.setRating(average);
+
+        int totalQuantity = 0;
+        List<ProductDetailEntity> listProductDetailEntity = productDetailRepository.findByProductID(productEntity.getId());
+        for( ProductDetailEntity productDetailEntity :listProductDetailEntity){
+            totalQuantity += productDetailEntity.getQuantity();
+        }
+        productResponseDto.setQuantity(totalQuantity);
+
+        productResponseDto.setPrice(Float.toString(productEntity.getPrice()));
 
 //        return productResponseDto;
     }

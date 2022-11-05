@@ -24,13 +24,13 @@ public class CustomerController {
 
     @GetMapping
     List<CustomerResponseDto> getAllCustomers(){
-        return this.customerService.getAllCustomers();
+        return customerService.getAllCustomers();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     CustomerResponseDto createCustomer(@Valid @RequestBody CustomerUpdateDto dto){
-        return this.customerService.createCustomer(dto);
+        return customerService.createCustomer(dto);
     }
 
     @PutMapping("/{id}")

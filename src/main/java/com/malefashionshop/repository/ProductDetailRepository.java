@@ -12,4 +12,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetailEnti
 
     @Query("FROM ProductDetailEntity WHERE deleteEnum = ?1 ")
     List<ProductDetailEntity> findAllByDeleteEnum(DeleteEnum state);
+
+    @Query("FROM ProductDetailEntity WHERE product.id = ?1 AND deleteEnum = 'ACTIVE' ")
+    List<ProductDetailEntity> findByProductID(Long productID);
 }
